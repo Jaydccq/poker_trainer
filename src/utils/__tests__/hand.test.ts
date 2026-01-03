@@ -219,6 +219,13 @@ describe('getHandKey', () => {
     expect(getHandKey([card('A'), card('2')])).toBe('SOFT_A2');
   });
 
+  it('should generate correct key for soft hands with more than 2 cards', () => {
+    // Bug fix: 2+5+A should be SOFT_A7 (soft 18), not SOFT_A2
+    expect(getHandKey([card('2'), card('5'), card('A')])).toBe('SOFT_A7');
+    expect(getHandKey([card('3'), card('4'), card('A')])).toBe('SOFT_A7');
+    expect(getHandKey([card('2'), card('2'), card('2'), card('A')])).toBe('SOFT_A6');
+  });
+
   it('should generate correct key for hard hands', () => {
     expect(getHandKey([card('10'), card('2')])).toBe('HARD_12');
     expect(getHandKey([card('9'), card('7')])).toBe('HARD_16');

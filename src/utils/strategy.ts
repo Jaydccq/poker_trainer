@@ -37,8 +37,15 @@ export function recommendAction(
   }
 
   // 3. soft hand strategy
-  if (hand.isSoft && hand.cards.length === 2) {
-    return checkSoftStrategy(hand, dealerValue, rules, canDouble);
+  if (hand.isSoft) {
+    // 3a. Standard soft strategy (2 cards, doubling allowed)
+    if (hand.cards.length === 2) {
+      return checkSoftStrategy(hand, dealerValue, rules, canDouble);
+    }
+    // 3b. Restricted soft strategy (3+ cards, no doubling)
+    else {
+      return checkRestrictedSoftStrategy(hand, dealerValue);
+    }
   }
 
   // 4. hard hand strategy
@@ -419,6 +426,57 @@ function checkSoftStrategy(
     reason: { zh: "默认 Hit", en: "Default: hit" },
   };
 }
+
+// --------------- 受限软手策略 (3张牌及以上，无法加倍) ---------------
+function checkRestrictedSoftStrategy(
+  hand: Hand,
+  dealerValue: number
+): StrategyRecommendation {
+  const total = hand.total;
+
+  // Soft 19+ (A,8 / A,9): 始终停牌
+  if (total >= 19) {
+    return {
+      bestAction: "stand",
+      reason: {
+        zh: `Soft ${total} 极强，停牌`,
+        en: `Soft ${total} is very strong, stand`,
+      },
+    };
+  }
+
+  // Soft 18 (A,7 或多张牌如 A,2,5): 最复杂的分水岭
+  if (total === 18) {
+    // 对抗 9/10/A: 要牌（18点不够对抗强牌）
+    if ([9, 10, 11].includes(dealerValue)) {
+      return {
+        bestAction: "hit",
+        reason: {
+          zh: "Soft 18 vs 9/10/A 要牌！18点对抗强牌是输牌，博取A-3改善",
+          en: "Hit soft 18 vs 9/10/A! 18 loses to strong dealers, try to improve with A-3",
+        },
+      };
+    }
+    // 对抗 2-8: 停牌
+    return {
+      bestAction: "stand",
+      reason: {
+        zh: "Soft 18 vs 弱牌/中性牌停牌，18点已足够",
+        en: "Stand soft 18 vs weak/neutral dealers, 18 is good enough",
+      },
+    };
+  }
+
+  // Soft 17 及以下: 始终要牌（零爆牌风险）
+  return {
+    bestAction: "hit",
+    reason: {
+      zh: `Soft ${total} 必须要牌！软牌零爆牌风险，${total}点停牌必输`,
+      en: `Must hit soft ${total}! No bust risk, standing on ${total} will lose`,
+    },
+  };
+}
+
 // --------------- 硬手策略 ---------------
 function checkHardStrategy(
   hand: Hand,

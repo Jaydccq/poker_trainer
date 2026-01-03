@@ -77,9 +77,11 @@ export function getHandKey(cards: Card[]): string {
   }
 
   if (handType === "soft") {
-    // 软手：找到非 A 的那张牌
-    const nonAce = cards.find((c) => c.rank !== "A");
-    return `SOFT_A${nonAce?.rank || total - 11}`;
+    // 软手：计算所有非 A 牌的总和
+    const nonAceTotal = cards
+      .filter((c) => c.rank !== "A")
+      .reduce((sum, card) => sum + card.value, 0);
+    return `SOFT_A${nonAceTotal || (total - 11)}`;
   }
 
   return `HARD_${total}`;
