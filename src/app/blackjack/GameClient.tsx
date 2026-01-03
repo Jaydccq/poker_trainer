@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useGame, PendingFeedback } from '@/hooks/useGame';
 import { useI18n } from '@/hooks/useI18n';
 import { useStatistics } from '@/hooks/useStatistics';
@@ -14,12 +15,10 @@ import ShoeIndicator from '@/components/ShoeIndicator';
 import ChipControls from '@/components/ChipControls';
 import styles from './page.module.css';
 
-import { useSearchParams, useRouter } from 'next/navigation';
-
-export default function Home() {
+export default function GameClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const mode = searchParams.get('mode') as 'free' | 'training' || 'free';
+  const mode = (searchParams.get('mode') as 'free' | 'training') || 'free';
 
   const { t } = useI18n();
   const {
@@ -36,25 +35,25 @@ export default function Home() {
     clearBet,
     resetToBetting,
   } = useGame(undefined, mode);
-  
-  const { 
-    stats, 
-    recordDecision, 
-    clearRecords, 
-    getRecentRecords 
+
+  const {
+    stats,
+    recordDecision,
+    clearRecords,
+    getRecentRecords,
   } = useStatistics();
-  
+
   const [showSettings, setShowSettings] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  
+
   // Keep track of last feedback to persist sidebar
   const [displayFeedback, setDisplayFeedback] = useState<PendingFeedback | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
   // Auto-deal countdown
   const [countdown, setCountdown] = useState(2);
-  
+
   // Update display feedback when new pending feedback arrives
   useEffect(() => {
     if (pendingFeedback) {
@@ -67,7 +66,7 @@ export default function Home() {
       } else {
         setDisplayFeedback(pendingFeedback);
       }
-      
+
       recordDecision(
         rules,
         pendingFeedback.handType as 'hard' | 'soft' | 'pair',
@@ -79,12 +78,12 @@ export default function Home() {
       );
     }
   }, [pendingFeedback]);
-  
+
   const handleDealNewHand = () => {
     setDisplayFeedback(null);
     dealNewHand();
   };
-  
+
   // Auto transition: Free mode -> auto deal, Training mode -> go to betting
   useEffect(() => {
     if (state.phase === 'settlement' && !isPaused) {
@@ -110,36 +109,36 @@ export default function Home() {
       }
     }
   }, [state.phase, isPaused, mode, dealNewHand, resetToBetting]);
-  
+
   const totalShoeCards = rules.decks * 52;
   const showSidebar = displayFeedback && state.phase !== 'betting';
-  
+
   return (
     <div className={`${styles.container} ${state.phase === 'betting' ? styles.noPadding : ''} gradient-bg`}>
-      <Header 
+      <Header
         onOpenSettings={() => setShowSettings(true)}
         onOpenStats={() => setShowStats(true)}
         onBack={() => router.push('/')}
       />
-      
+
       {/* Shoe indicator */}
       {state.phase !== 'betting' && (
-        <ShoeIndicator 
-          remaining={state.shoe.length} 
+        <ShoeIndicator
+          remaining={state.shoe.length}
           total={totalShoeCards}
         />
       )}
-      
+
       {/* Pause button */}
       {state.phase !== 'betting' && (
-        <button 
+        <button
           className={`${styles.pauseBtn} ${isPaused ? styles.paused : ''}`}
           onClick={() => setIsPaused(!isPaused)}
         >
           {isPaused ? '▶️' : '⏸️'}
         </button>
       )}
-      
+
       <main className={styles.main}>
         {state.phase === 'betting' ? (
           <div className={styles.startScreen}>
@@ -157,7 +156,7 @@ export default function Home() {
                 justRefilled={state.justRefilled}
               />
             ) : (
-              <button 
+              <button
                 className={styles.dealBtn}
                 onClick={handleDealNewHand}
               >
@@ -184,32 +183,32 @@ export default function Home() {
                 </div>
               </div>
             )}
-            
+
             <div className={styles.gameArea}>
-              <Hand 
+              <Hand
                 hand={state.dealerHand}
                 label={t('dealer')}
                 hideFirstCard={!state.dealerHoleCardRevealed}
               />
-              
+
               <div className={styles.divider} />
-              
+
               {state.playerHands.map((hand, index) => (
-                <Hand 
+                <Hand
                   key={index}
                   hand={hand}
-                  label={state.playerHands.length > 1 
-                    ? `${t('player')} ${index + 1}` 
+                  label={state.playerHands.length > 1
+                    ? `${t('player')} ${index + 1}`
                     : t('player')}
                   isActive={index === state.currentHandIndex && state.phase === 'playerTurn'}
                 />
               ))}
-              
+
               {state.phase === 'settlement' && (
                 <div className={styles.results}>
                   <div className={styles.resultRow}>
                     {state.result.map((result, index) => (
-                      <span 
+                      <span
                         key={index}
                         className={`${styles.result} ${styles[result]}`}
                       >
@@ -233,17 +232,17 @@ export default function Home() {
           </>
         )}
       </main>
-      
+
       {state.phase === 'playerTurn' && (
-        <ActionBar 
+        <ActionBar
           onAction={handleAction}
           disabled={!!pendingFeedback}
           {...availableActions}
         />
       )}
-      
+
       {showSidebar && (
-        <TrainingFeedback 
+        <TrainingFeedback
           isCorrect={displayFeedback.isCorrect}
           chosenAction={displayFeedback.chosenAction}
           recommendation={displayFeedback.recommendation}
@@ -252,17 +251,17 @@ export default function Home() {
           isTransitioning={isTransitioning}
         />
       )}
-      
+
       {showSettings && (
-        <Settings 
+        <Settings
           rules={rules}
           onUpdateRules={updateRules}
           onClose={() => setShowSettings(false)}
         />
       )}
-      
+
       {showStats && (
-        <Statistics 
+        <Statistics
           stats={stats}
           recentRecords={getRecentRecords(20)}
           onClearRecords={clearRecords}

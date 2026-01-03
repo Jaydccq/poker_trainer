@@ -1,0 +1,362 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: 20px;
+  color: #fff;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.backBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controlGroup label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.filterBtns {
+  display: flex;
+  gap: 4px;
+}
+
+.filterBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.filterBtn.active {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.exportBtn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+
+.exportBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.scenarioInfo {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border-left: 4px solid #22c55e;
+}
+
+.scenarioInfo h2 {
+  font-size: 1.2rem;
+  margin: 0 0 8px 0;
+}
+
+.zhName {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.scenarioInfo p {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.difficulty {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.difficulty.beginner {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.difficulty.intermediate {
+  background: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+}
+
+.difficulty.advanced {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.heatmapContainer {
+  position: relative;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.heatmap {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.headerRow, .row {
+  display: flex;
+}
+
+.cornerCell {
+  width: 44px;
+  height: 32px;
+}
+
+.headerCell {
+  width: 44px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+}
+
+.cell {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 1px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.cell:hover {
+  transform: scale(1.15);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.cell.dimmed {
+  opacity: 0.3;
+}
+
+.handLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 200px;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.tooltipHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltipHeader strong {
+  font-size: 1.2rem;
+}
+
+.combos {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+}
+
+.tooltipBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.freqRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.raiseLabel, .callLabel, .foldLabel {
+  width: 40px;
+  font-size: 0.8rem;
+}
+
+.raiseLabel { color: #22c55e; }
+.callLabel { color: #eab308; }
+.foldLabel { color: #9ca3af; }
+
+.freqBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.freqFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.2s;
+}
+
+.freqRow span:last-child {
+  width: 36px;
+  text-align: right;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legendColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.legendItem span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .cell {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .headerCell {
+    width: 28px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+  
+  .cornerCell {
+    width: 28px;
+    height: 24px;
+  }
+  
+  .handLabel {
+    font-size: 0.5rem;
+  }
+  
+  .tooltip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    transform: none;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .exportBtn {
+    margin-left: 0;
+  }
+}
