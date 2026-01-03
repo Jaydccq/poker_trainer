@@ -108,7 +108,8 @@ export default function GameClient() {
         };
       }
     }
-  }, [state.phase, isPaused, mode, dealNewHand, resetToBetting]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.phase, isPaused, mode]);
 
   const totalShoeCards = rules.decks * 52;
   const showSidebar = displayFeedback && state.phase !== 'betting';

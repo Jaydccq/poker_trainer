@@ -132,24 +132,12 @@ export default function Tutorial() {
 
         <section className={styles.report}>
             <div className={styles.reportHeader}>
-              <span className={styles.kicker}>
-                {language === 'zh' ? '策略验证报告' : 'Strategy Verification Report'}
-              </span>
-              <h2 className={styles.reportTitle}>
-                {language === 'zh' 
-                  ? '用户策略全维度解析与优化建议' 
-                  : 'Comprehensive Strategy Analysis & Optimization Guide'}
-              </h2>
+              <span className={styles.kicker}>策略验证报告</span>
+              <h2 className={styles.reportTitle}>用户策略全维度解析与优化建议</h2>
               <p className={styles.reportIntro}>
-                {language === 'zh'
-                  ? '以多副牌、S17、DAS为基础，逐章验证策略正确性，并补充投降与保险等缺失环节。'
-                  : 'Multi-deck, S17, DAS basic strategy verification with surrender and insurance coverage.'}
+                以多副牌、S17、DAS为基础，逐章验证策略正确性，并补充投降与保险等缺失环节。
               </p>
             </div>
-
-            {language === 'zh' ? (
-              // Chinese version
-              <>
 
             <div className={styles.chapter}>
               <div className={styles.chapterHeader}>
@@ -388,20 +376,6 @@ export default function Tutorial() {
                 </ul>
               </div>
             </div>
-            </>
-          ) : (
-            // English version - placeholder for now
-            <div className={styles.chapter}>
-              <div className={styles.chapterHeader}>
-                <div className={styles.chapterIndex}>01</div>
-                <h3>Full English strategy guide coming soon</h3>
-              </div>
-              <div className={styles.chapterBody}>
-                <p>The complete English translation of all 8 strategy chapters is being prepared.</p>
-                <p>For now, please refer to the card counting tutorial above and practice with the Training Mode.</p>
-              </div>
-            </div>
-          )}
           </section>
       </main>
     </div>
