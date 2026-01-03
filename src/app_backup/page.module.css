@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 140px;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.startScreen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dealBtn {
+  padding: 20px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+}
+
+.dealBtn:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.05);
+}
+
+.gameArea {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  z-index: 10;
+}
+
+.divider {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  margin: var(--spacing-sm) 0;
+}
+
+.results {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.resultRow {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.result {
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.win, .blackjack {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--color-success);
+}
+
+.lose {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--color-error);
+}
+
+.push {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--color-warning);
+}
+
+.surrender {
+  background: rgba(156, 163, 175, 0.2);
+  color: var(--color-text-muted);
+}
+
+.countdown {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.pauseBtn {
+  position: fixed;
+  left: var(--spacing-md);
+  top: 140px;
+  width: 44px;
+  height: 44px;
+  background: var(--color-bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  transition: all 0.2s ease;
+}
+
+.pauseBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pauseBtn.paused {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}

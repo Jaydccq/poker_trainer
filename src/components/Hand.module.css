@@ -1,0 +1,64 @@
+.hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.active {
+  background: rgba(16, 185, 129, 0.1);
+  box-shadow: 0 0 20px var(--color-primary-glow);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.total {
+  background: var(--color-bg-elevated);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 16px;
+}
+
+.busted {
+  color: var(--color-error);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-left: var(--spacing-sm);
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.cardsRow {
+  display: flex;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  position: relative;
+}
+
+.cardWrapper {
+  margin-left: -35px;
+  transform: translateY(calc(var(--index, 0) * 2px));
+  transition: transform 0.2s ease;
+  z-index: var(--index, 0);
+  flex-shrink: 0;
+}
+
+.cardWrapper:first-child {
+  margin-left: 0;
+}
