@@ -92,6 +92,17 @@ export default function MainMenu() {
             </button>
 
             <button 
+              className={`${styles.menuItem} ${styles.special}`}
+              onClick={() => router.push('/poker/builder')}
+            >
+              <div className={styles.icon}>🧮</div>
+              <div className={styles.content}>
+                <h3>Custom Solutions</h3>
+                <p>Build & solve custom GTO scenarios</p>
+              </div>
+            </button>
+
+            <button 
               className={styles.menuItem}
               onClick={() => router.push('/poker/scenarios')}
             >

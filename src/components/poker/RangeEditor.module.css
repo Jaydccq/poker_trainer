@@ -1,0 +1,318 @@
+.container {
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.swapBtn {
+  margin-left: auto;
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.swapBtn:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.weightControl {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.weightControl input[type="range"] {
+  width: 80px;
+  accent-color: #22c55e;
+}
+
+.linearControl {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.linearControl input[type="number"] {
+  width: 50px;
+  padding: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.applyBtn {
+  padding: 0.25rem 0.5rem;
+  background: rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.applyBtn:hover {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+.gridContainer {
+  position: relative;
+  user-select: none;
+}
+
+.headerRow {
+  display: flex;
+}
+
+.row {
+  display: flex;
+}
+
+.cornerCell {
+  width: 26px;
+  height: 26px;
+}
+
+.headerCell {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.cell {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.1s;
+  position: relative;
+}
+
+.cell:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.cell.active {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.handLabel {
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+}
+
+.weightLabel {
+  font-size: 0.45rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.tipHint {
+  font-size: 0.65rem;
+  color: #64748b;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.actionBtn {
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #1e1e2e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  min-width: 300px;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalContent h4 {
+  margin: 0 0 1rem 0;
+  color: #fff;
+}
+
+.modalContent textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-family: monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.modalContent input[type="text"] {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.modalActions button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.modalActions button:first-child {
+  background: #22c55e;
+  border: none;
+  color: #fff;
+}
+
+.modalActions button:last-child {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.savedList {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.savedItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.savedItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.savedName {
+  color: #fff;
+  font-weight: 500;
+}
+
+.savedDate {
+  color: #64748b;
+  font-size: 0.8rem;
+}
