@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  ReactNode,
+  useState,
+} from 'react';
 import { Language } from '@/types';
 
 const translations = {
@@ -25,6 +33,7 @@ const translations = {
     total: '点数',
     soft: '软',
     hard: '硬',
+    pair: '对子',
     newGame: '新一局',
     win: '赢',
     lose: '输',
@@ -44,6 +53,20 @@ const translations = {
     recentHistory: '最近记录',
     maxSplitHands: '最大分牌数',
     acesSplitOneCard: 'A分牌后只补一张',
+    runningCountLabel: '流水数',
+    trueCountLabel: '真数',
+    chipsLabel: '筹码',
+    placeNextBet: '请下注下一手...',
+    balanceLabel: '余额',
+    betLabel: '下注',
+    clear: '清除',
+    deal: '发牌',
+    minBetIs: '最低下注为',
+    clearAllData: '清除所有数据',
+    correctStrategy: '正确策略',
+    youChose: '你选择了',
+    vs: '对',
+    refillNotice: '筹码已补充至 $1000！继续练习！',
   },
   en: {
     title: 'Blackjack Trainer',
@@ -66,6 +89,7 @@ const translations = {
     total: 'Total',
     soft: 'Soft',
     hard: 'Hard',
+    pair: 'Pair',
     newGame: 'New Hand',
     win: 'Win',
     lose: 'Lose',
@@ -85,21 +109,43 @@ const translations = {
     recentHistory: 'Recent History',
     maxSplitHands: 'Max Split Hands',
     acesSplitOneCard: 'Aces Split One Card',
+    runningCountLabel: 'Running Count',
+    trueCountLabel: 'True Count',
+    chipsLabel: 'Chips',
+    placeNextBet: 'Place your next bet...',
+    balanceLabel: 'Balance',
+    betLabel: 'Bet',
+    clear: 'Clear',
+    deal: 'Deal',
+    minBetIs: 'Min bet is',
+    clearAllData: 'Clear All Data',
+    correctStrategy: 'Correct Strategy',
+    youChose: 'You chose',
+    vs: 'vs',
+    refillNotice: 'Chips refilled to $1000! Keep practicing!',
   }
 } as const;
 
 export type TranslationKey = keyof typeof translations.zh;
 
-export function useI18n() {
+type I18nContextValue = {
+  language: Language;
+  toggleLanguage: () => void;
+  t: (key: TranslationKey) => string;
+};
+
+const I18nContext = createContext<I18nContextValue | null>(null);
+
+export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('zh');
-  
+
   useEffect(() => {
     const saved = localStorage.getItem('blackjack-lang') as Language;
     if (saved === 'zh' || saved === 'en') {
       setLanguage(saved);
     }
   }, []);
-  
+
   const toggleLanguage = useCallback(() => {
     setLanguage(prev => {
       const next = prev === 'zh' ? 'en' : 'zh';
@@ -107,10 +153,24 @@ export function useI18n() {
       return next;
     });
   }, []);
-  
+
   const t = useCallback((key: TranslationKey): string => {
     return translations[language][key] || key;
   }, [language]);
-  
-  return { language, toggleLanguage, t };
+
+  const value = useMemo(() => ({ language, toggleLanguage, t }), [language, toggleLanguage, t]);
+
+  return (
+    <I18nContext.Provider value={value}>
+      {children}
+    </I18nContext.Provider>
+  );
+}
+
+export function useI18n() {
+  const context = useContext(I18nContext);
+  if (!context) {
+    throw new Error('useI18n must be used within I18nProvider');
+  }
+  return context;
 }

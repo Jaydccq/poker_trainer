@@ -8,6 +8,7 @@ import {
   GameRules, 
   GameState, 
   Hand, 
+  BlackjackPayout,
   RoundResult,
   StrategyRecommendation 
 } from '@/types';
@@ -154,8 +155,8 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
            payout = playerHand.bet; // Return bet
         } else if (playerHand.isBlackjack) {
            result = ['blackjack'];
-           // 3:2 payout
-           payout = playerHand.bet + (playerHand.bet * 1.5);
+           const blackjackPayout = getBlackjackPayoutMultiplier(rules.blackjackPayout);
+           payout = playerHand.bet * (1 + blackjackPayout);
         } else {
            result = ['lose'];
            payout = 0;
@@ -355,7 +356,7 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
             if (mode === 'training') {
                 balance += (hand.bet * 0.5);
             }
-            newHands[handIndex] = { ...hand, isComplete: true };
+            newHands[handIndex] = { ...hand, isComplete: true, isSurrendered: true };
           break;
         }
         
@@ -442,13 +443,8 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
       let balance = prev.chipBalance;
       
       const results: RoundResult[] = prev.playerHands.map((hand) => {
-        if (hand.isComplete && hand.cards.length === 2 && !hand.isBusted && hand.total < 21) {
-             // Surrender logic handled in executeAction actually. 
-             // But result array needs 'surrender' entry?
-             // Not really, surrender stops the hand.
-             // If surrender was chosen, isBusted is false, but hand is complete.
-             // But surrender action immediately set isComplete.
-             // We need to return specific 'surrender' status if we want to show it.
+        if (hand.isSurrendered) {
+          return 'surrender';
         }
         
         // Payout logic
@@ -526,6 +522,10 @@ function getHiLoValue(card: Card): number {
   if (['2', '3', '4', '5', '6'].includes(card.rank)) return 1;
   if (['10', 'J', 'Q', 'K', 'A'].includes(card.rank)) return -1;
   return 0;
+}
+
+function getBlackjackPayoutMultiplier(payout: BlackjackPayout): number {
+  return payout === '6:5' ? 1.2 : 1.5;
 }
 
 function getHandKeyFromHand(hand: Hand): string {

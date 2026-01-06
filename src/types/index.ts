@@ -30,6 +30,7 @@ export interface Hand {
   isPair: boolean;
   isBlackjack: boolean;
   isBusted: boolean;
+  isSurrendered?: boolean;
   isFromSplit: boolean;
   isComplete: boolean;
   bet: number;

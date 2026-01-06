@@ -3,29 +3,33 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--color-bg-card);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 17, 30, 0.92);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
   padding: var(--spacing-md);
   padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
   z-index: 100;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.35);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--spacing-sm);
-  max-width: 400px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
 .button {
-  padding: 16px 8px;
+  padding: 14px 8px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   transition: all 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .button:disabled {
@@ -86,9 +90,26 @@
 .muted {
   background: var(--color-bg-elevated);
   color: var(--color-text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .muted:not(:disabled):hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+  .actionBar {
+    padding: var(--spacing-sm);
+    padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .grid {
+    gap: 8px;
+  }
+
+  .button {
+    padding: 12px 6px;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+  }
 }

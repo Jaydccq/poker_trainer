@@ -1,6 +1,7 @@
 "use client";
 
 import { Hand as HandType } from "@/types";
+import { useI18n } from "@/hooks/useI18n";
 import Card from "./card";
 import styles from "./Hand.module.css";
 
@@ -17,14 +18,20 @@ export default function Hand({
   hideFirstCard = false,
   isActive = false,
 }: HandProps) {
+  const { t, language } = useI18n();
+
   const displayTotal = () => {
     if (hideFirstCard) {
       return "?";
     }
     if (hand.isBlackjack) {
-      return "BJ!";
+      return t("blackjack");
     }
-    const prefix = hand.isSoft ? "Soft " : "";
+    const prefix = hand.isSoft
+      ? language === "zh"
+        ? t("soft")
+        : `${t("soft")} `
+      : "";
     return `${prefix}${hand.total}`;
   };
   
@@ -47,7 +54,7 @@ export default function Hand({
           ))}
         </div>
         {hand.isBusted && (
-          <span className={styles.busted}>BUST</span>
+          <span className={styles.busted}>{t("busted")}</span>
         )}
       </div>
     </div>

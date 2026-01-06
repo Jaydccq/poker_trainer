@@ -171,15 +171,15 @@ export default function GameClient() {
             {mode === 'training' && (
               <div className={styles.countPanel}>
                 <div className={styles.countItem}>
-                  <label>Running Count</label>
+                  <label>{t('runningCountLabel')}</label>
                   <span>{state.runningCount > 0 ? `+${state.runningCount}` : state.runningCount}</span>
                 </div>
                 <div className={styles.countItem}>
-                  <label>True Count</label>
+                  <label>{t('trueCountLabel')}</label>
                   <span>{state.trueCount > 0 ? `+${state.trueCount}` : state.trueCount}</span>
                 </div>
                 <div className={styles.countItem}>
-                  <label>Chips</label>
+                  <label>{t('chipsLabel')}</label>
                   <span>${state.chipBalance}</span>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export default function GameClient() {
                   )}
                   {mode === 'training' && (
                     <div className={styles.nextBetHint}>
-                      Place your next bet...
+                      {t('placeNextBet')}
                     </div>
                   )}
                 </div>

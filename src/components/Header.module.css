@@ -3,17 +3,19 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 17, 30, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
 .title {
-  font-size: 18px;
+  font-size: clamp(16px, 2.6vw, 20px);
   font-weight: 700;
   color: var(--color-text);
+  letter-spacing: 0.4px;
 }
 
 .actions {
@@ -24,7 +26,7 @@
 .langBtn {
   padding: 6px 12px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated);
+  background: linear-gradient(135deg, rgba(37, 37, 66, 0.9), rgba(18, 21, 36, 0.9));
   font-size: 12px;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -42,11 +44,32 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated);
+  background: rgba(37, 37, 66, 0.8);
   font-size: 18px;
   transition: all 0.2s ease;
 }
 
 .iconBtn:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .iconBtn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .langBtn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
 }

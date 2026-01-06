@@ -60,6 +60,7 @@ export function createHand(cards: Card[], isFromSplit = false): Hand {
     isPair: isPair(cards),
     isBlackjack: isBlackjack(cards),
     isBusted: isBusted(cards),
+    isSurrendered: false,
     isFromSplit,
     isComplete: false,
     bet: 0,

@@ -4,7 +4,7 @@
   top: 60px;
   bottom: 140px;
   width: 240px;
-  background: rgba(26, 26, 46, 0.95);
+  background: rgba(18, 20, 36, 0.96);
   backdrop-filter: blur(12px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   padding: var(--spacing-lg);
@@ -14,6 +14,7 @@
   gap: var(--spacing-md);
   overflow-y: auto;
   transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: -12px 0 24px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar.transitioning {
@@ -21,10 +22,20 @@
   transform: translateX(10px);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .sidebar {
-    width: 200px;
+    right: var(--spacing-md);
+    top: auto;
+    bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+    width: min(360px, 92vw);
+    max-height: 45vh;
     padding: var(--spacing-md);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .sidebar.transitioning {
+    transform: translateY(6px);
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Statistics as StatsType, DecisionRecord, Action } from '@/types';
-import { useI18n } from '@/hooks/useI18n';
+import { useI18n, TranslationKey } from '@/hooks/useI18n';
 import styles from './Statistics.module.css';
 
 interface StatisticsProps {
@@ -12,13 +12,13 @@ interface StatisticsProps {
   onClose: () => void;
 }
 
-const ACTION_LABELS: Record<Action, { zh: string; en: string }> = {
-  hit: { zh: '要牌', en: 'Hit' },
-  stand: { zh: '停牌', en: 'Stand' },
-  double: { zh: '加倍', en: 'Double' },
-  split: { zh: '分牌', en: 'Split' },
-  surrender: { zh: '投降', en: 'Surrender' },
-  insurance: { zh: '保险', en: 'Insurance' },
+const ACTION_KEYS: Record<Action, TranslationKey> = {
+  hit: 'hit',
+  stand: 'stand',
+  double: 'double',
+  split: 'split',
+  surrender: 'surrender',
+  insurance: 'insurance',
 };
 
 export default function Statistics({ 
@@ -27,7 +27,7 @@ export default function Statistics({
   onClearRecords, 
   onClose 
 }: StatisticsProps) {
-  const { t, language } = useI18n();
+  const { t } = useI18n();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   
   const accuracy = stats.totalDecisions > 0 
@@ -41,7 +41,7 @@ export default function Statistics({
   };
   
   const getActionLabel = (action: Action) => {
-    return language === 'zh' ? ACTION_LABELS[action].zh : ACTION_LABELS[action].en;
+    return t(ACTION_KEYS[action]);
   };
   
   return (
@@ -63,7 +63,7 @@ export default function Statistics({
           
           <div className={styles.categories}>
             <div className={styles.category}>
-              <span className={styles.catLabel}>Hard</span>
+              <span className={styles.catLabel}>{t('hard')}</span>
               <div className={styles.bar}>
                 <div 
                   className={styles.barFill} 
@@ -73,7 +73,7 @@ export default function Statistics({
               <span className={styles.catPercent}>{getTypeAccuracy('hard')}%</span>
             </div>
             <div className={styles.category}>
-              <span className={styles.catLabel}>Soft</span>
+              <span className={styles.catLabel}>{t('soft')}</span>
               <div className={styles.bar}>
                 <div 
                   className={styles.barFill} 
@@ -83,7 +83,7 @@ export default function Statistics({
               <span className={styles.catPercent}>{getTypeAccuracy('soft')}%</span>
             </div>
             <div className={styles.category}>
-              <span className={styles.catLabel}>Pair</span>
+              <span className={styles.catLabel}>{t('pair')}</span>
               <div className={styles.bar}>
                 <div 
                   className={styles.barFill} 
@@ -116,13 +116,13 @@ export default function Statistics({
                     >
                       <span className={styles.errorRank}>#{index + 1}</span>
                       <span className={styles.errorHand}>{error.handKey}</span>
-                      <span className={styles.errorDealer}>vs {error.dealerUpcard}</span>
+                      <span className={styles.errorDealer}>{t('vs')} {error.dealerUpcard}</span>
                       <span className={styles.errorCount}>×{error.errorCount}</span>
                       
                       {hoveredItem === itemKey && record && (
                         <div className={styles.tooltip}>
                           <div className={styles.tooltipTitle}>
-                            {language === 'zh' ? '正确策略' : 'Correct Strategy'}
+                            {t('correctStrategy')}
                           </div>
                           <div className={styles.tooltipAction}>
                             {getActionLabel(record.bestAction)}
@@ -154,19 +154,19 @@ export default function Statistics({
                         {record.correct ? '✓' : '✗'}
                       </span>
                       <span className={styles.historyHand}>{record.handKey}</span>
-                      <span className={styles.historyDealer}>vs {record.dealerUpcard}</span>
+                      <span className={styles.historyDealer}>{t('vs')} {record.dealerUpcard}</span>
                       
                       {hoveredItem === itemKey && (
                         <div className={styles.tooltip}>
                           <div className={styles.tooltipTitle}>
-                            {language === 'zh' ? '正确策略' : 'Correct Strategy'}
+                            {t('correctStrategy')}
                           </div>
                           <div className={styles.tooltipAction}>
                             {getActionLabel(record.bestAction)}
                           </div>
                           {!record.correct && (
                             <div className={styles.tooltipChosen}>
-                              {language === 'zh' ? '你选择了' : 'You chose'}: {getActionLabel(record.chosenAction)}
+                              {t('youChose')}: {getActionLabel(record.chosenAction)}
                             </div>
                           )}
                         </div>
@@ -179,7 +179,7 @@ export default function Statistics({
           )}
           
           <button className={styles.clearBtn} onClick={onClearRecords}>
-            Clear All Data
+            {t('clearAllData')}
           </button>
         </div>
       </div>

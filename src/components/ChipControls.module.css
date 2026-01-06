@@ -199,3 +199,32 @@
   font-size: 0.9rem;
 }
 
+@media (max-width: 720px) {
+  .container {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .info {
+    font-size: 1rem;
+  }
+
+  .chips {
+    gap: 0.75rem;
+  }
+
+  .chip {
+    width: 52px;
+    height: 52px;
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .clearBtn,
+  .dealBtn {
+    width: 100%;
+  }
+}

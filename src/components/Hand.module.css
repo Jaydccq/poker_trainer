@@ -17,10 +17,10 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-size: 14px;
+  font-size: clamp(12px, 2.4vw, 14px);
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
 }
 
 .total {
@@ -29,13 +29,13 @@
   border-radius: 20px;
   font-weight: 600;
   color: var(--color-text);
-  font-size: 16px;
+  font-size: clamp(13px, 2.8vw, 16px);
 }
 
 .busted {
   color: var(--color-error);
   font-weight: 800;
-  font-size: 18px;
+  font-size: clamp(14px, 3.5vw, 18px);
   text-transform: uppercase;
   margin-left: var(--spacing-sm);
   text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
@@ -52,7 +52,7 @@
 }
 
 .cardWrapper {
-  margin-left: -35px;
+  margin-left: clamp(-34px, -8vw, -20px);
   transform: translateY(calc(var(--index, 0) * 2px));
   transition: transform 0.2s ease;
   z-index: var(--index, 0);
@@ -61,4 +61,16 @@
 
 .cardWrapper:first-child {
   margin-left: 0;
+}
+
+@media (max-width: 640px) {
+  .hand {
+    padding: var(--spacing-sm);
+  }
+
+  .label {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
 }
