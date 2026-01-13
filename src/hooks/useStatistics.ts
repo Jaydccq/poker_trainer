@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { DecisionRecord, Statistics, HandType, Rank, GameRules, Action } from '@/types';
 
 const STORAGE_KEY = 'blackjack-decisions';
@@ -20,21 +20,19 @@ function getInitialStats(): Statistics {
 }
 
 export function useStatistics() {
-  const [records, setRecords] = useState<DecisionRecord[]>([]);
-  const [stats, setStats] = useState<Statistics>(getInitialStats);
-  
-  useEffect(() => {
+  const loadRecords = (): DecisionRecord[] => {
+    if (typeof window === 'undefined') return [];
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved) as DecisionRecord[];
-        setRecords(parsed);
-        setStats(computeStats(parsed));
-      }
+      return saved ? (JSON.parse(saved) as DecisionRecord[]) : [];
     } catch (e) {
       console.error('Failed to load decision records:', e);
+      return [];
     }
-  }, []);
+  };
+
+  const [records, setRecords] = useState<DecisionRecord[]>(loadRecords);
+  const [stats, setStats] = useState<Statistics>(() => computeStats(loadRecords()));
   
   const recordDecision = useCallback((
     rules: GameRules,

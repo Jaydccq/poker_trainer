@@ -1,12 +1,12 @@
-import { Card, GameRules } from '@/types';
+import { Card, GameRules, Rank, Suit } from '@/types';
 import { recommendAction, StrategyContext } from '../strategy';
 import { createHand } from '../hand';
 
 // Helper to create cards
-const card = (rank: string, suit = 'hearts'): Card => ({
-  rank: rank as any,
-  suit: suit as any,
-  value: rank === 'A' ? 11 : ['J', 'Q', 'K'].includes(rank) ? 10 : parseInt(rank),
+const card = (rank: Rank, suit: Suit = 'hearts'): Card => ({
+  rank,
+  suit,
+  value: rank === 'A' ? 11 : ['J', 'Q', 'K', '10'].includes(rank) ? 10 : Number(rank),
 });
 
 const DEFAULT_RULES: GameRules = {
@@ -177,7 +177,7 @@ describe('Strategy Recommendations', () => {
       const playerHand = createHand([card('8'), card('8')]);
       
       // Test against various dealer cards
-      const dealerCards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'A'];
+      const dealerCards: Rank[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'A'];
       
       dealerCards.forEach(dealerRank => {
         const context: StrategyContext = {
@@ -197,7 +197,7 @@ describe('Strategy Recommendations', () => {
       const playerHand = createHand([card('A'), card('A')]);
       
       // Test against various dealer cards
-      const dealerCards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'A'];
+      const dealerCards: Rank[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'A'];
       
       dealerCards.forEach(dealerRank => {
         const context: StrategyContext = {
@@ -217,7 +217,7 @@ describe('Strategy Recommendations', () => {
       const playerHand = createHand([card('9'), card('9')]);
 
       it('should SPLIT 99 vs 2-6, 8-9', () => {
-        const splitAgainst = ['2', '3', '4', '5', '6', '8', '9'];
+        const splitAgainst: Rank[] = ['2', '3', '4', '5', '6', '8', '9'];
         
         splitAgainst.forEach(dealerRank => {
           const context: StrategyContext = {
@@ -234,7 +234,7 @@ describe('Strategy Recommendations', () => {
       });
 
       it('should STAND on 99 vs 7, 10, A', () => {
-        const standAgainst = ['7', '10', 'A'];
+        const standAgainst: Rank[] = ['7', '10', 'A'];
         
         standAgainst.forEach(dealerRank => {
           const context: StrategyContext = {

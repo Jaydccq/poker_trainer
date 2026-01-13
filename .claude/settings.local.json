@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(chmod:*)",
+      "Bash(node test-api.mjs:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(npm run dev:*)",
+      "Bash(ls:*)",
+      "mcp__plugin_serena_serena__list_dir",
+      "mcp__plugin_serena_serena__activate_project",
+      "mcp__plugin_serena_serena__initial_instructions",
+      "mcp__plugin_serena_serena__get_symbols_overview",
+      "Bash(find:*)",
+      "Skill(ui-ux-pro-max)",
+      "mcp__plugin_serena_serena__replace_content",
+      "mcp__plugin_serena_serena__insert_after_symbol",
+      "mcp__plugin_serena_serena__read_file",
+      "Bash(npm run build:*)",
+      "Skill(planning-with-files)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill -9)",
+      "mcp__plugin_serena_serena__find_symbol"
+    ]
+  }
+}

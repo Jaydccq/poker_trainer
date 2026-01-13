@@ -4,10 +4,10 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   ReactNode,
   useState,
+  useEffect,
 } from 'react';
 import { Language } from '@/types';
 
@@ -140,7 +140,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('zh');
 
   useEffect(() => {
-    const saved = localStorage.getItem('blackjack-lang') as Language;
+    const saved = localStorage.getItem('blackjack-lang');
     if (saved === 'zh' || saved === 'en') {
       setLanguage(saved);
     }

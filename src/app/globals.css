@@ -1,34 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  /* Primary colors */
-  --color-primary: #10b981;
-  --color-primary-dark: #059669;
-  --color-primary-glow: rgba(16, 185, 129, 0.3);
-  
-  /* Background colors */
-  --color-bg: #0f0f1a;
-  --color-bg-card: #1a1a2e;
+@theme {
+  /* Gaming Color Palette */
+  --color-primary: #7C3AED;
+  --color-primary-light: #A78BFA;
+  --color-primary-dark: #6D28D9;
+
+  --color-cta: #F43F5E;
+  --color-cta-hover: #FB7185;
+
+  --color-bg-primary: #0F0F23;
+  --color-bg-card: #1A1A2E;
   --color-bg-elevated: #252542;
-  
-  /* Text colors */
-  --color-text: #f0f0f0;
-  --color-text-muted: #888;
-  
-  /* Status colors */
-  --color-success: #22c55e;
-  --color-error: #ef4444;
-  --color-warning: #f59e0b;
-  
+
+  --color-text-primary: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
+
+  --color-border: #4C1D95;
+  --color-border-subtle: #334155;
+
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
+
+  /* Legacy Casino Colors (for backward compatibility) */
+  --color-casino-green: #0F5132;
+  --color-casino-gold: #D4AF37;
+  --color-casino-gold-light: #F4E5B8;
+  --color-casino-felt: #1a5840;
+
   /* Card colors */
   --color-card-red: #ef4444;
   --color-card-black: #1f2937;
-  
+
+  /* Font Families */
+  --font-family-heading: 'Poppins', var(--font-playfair), sans-serif;
+  --font-family-body: 'Open Sans', var(--font-inter), sans-serif;
+  --font-family-serif: var(--font-playfair), 'Playfair Display', serif;
+  --font-family-mono: var(--font-geist-mono), monospace;
+}
+
+:root {
   /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -48,9 +70,9 @@ html {
 }
 
 body {
-  font-family: var(--font-geist-sans), 'Space Grotesk', 'Segoe UI', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text);
+  font-family: var(--font-family-body);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -79,10 +101,22 @@ a {
 /* Utility classes */
 .gradient-bg {
   background:
-    radial-gradient(circle at 18% 0%, rgba(16, 185, 129, 0.2) 0%, transparent 42%),
-    radial-gradient(circle at 82% 12%, rgba(59, 130, 246, 0.16) 0%, transparent 38%),
-    radial-gradient(circle at 50% 100%, rgba(234, 179, 8, 0.08) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(11, 15, 26, 0.95) 0%, var(--color-bg) 55%);
+    radial-gradient(circle at 18% 0%, rgba(124, 58, 237, 0.2) 0%, transparent 42%),
+    radial-gradient(circle at 82% 12%, rgba(244, 63, 94, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(15, 15, 35, 0.95) 0%, var(--color-bg-primary) 55%);
+}
+
+.shadow-glow-primary {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.shadow-glow-cta {
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+}
+
+.shadow-glow-success {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
 }
 
 .glass {
@@ -108,14 +142,57 @@ a {
   75% { transform: translateX(5px); }
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px currentColor;
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 30px currentColor;
+  }
+}
+
+@keyframes flipCard {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+@keyframes chipStack {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-slideIn {
+  animation: slideIn 0.4s ease-out;
 }
 
 .animate-shake {
   animation: shake 0.4s ease-in-out;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

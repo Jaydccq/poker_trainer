@@ -1,13 +1,13 @@
-import { Card, GameRules } from '@/types';
+import { Card, GameRules, Rank, Suit } from '@/types';
 import { createShoe, dealCard } from '../deck';
 import { createHand } from '../hand';
 import { recommendAction, StrategyContext } from '../strategy';
 
 // Helper to create cards
-const card = (rank: string, suit = 'hearts'): Card => ({
-  rank: rank as any,
-  suit: suit as any,
-  value: rank === 'A' ? 11 : ['J', 'Q', 'K'].includes(rank) ? 10 : parseInt(rank),
+const card = (rank: Rank, suit: Suit = 'hearts'): Card => ({
+  rank,
+  suit,
+  value: rank === 'A' ? 11 : ['J', 'Q', 'K', '10'].includes(rank) ? 10 : Number(rank),
 });
 
 const DEFAULT_RULES: GameRules = {

@@ -5,7 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useGame, PendingFeedback } from '@/hooks/useGame';
 import { useI18n } from '@/hooks/useI18n';
 import { useStatistics } from '@/hooks/useStatistics';
-import Header from '@/components/Header';
+import { Play, Pause, ArrowLeft, Settings as SettingsIcon, BarChart3, Spade } from 'lucide-react';
+import { Button } from '@/components/ui';
 import Hand from '@/components/Hand';
 import ActionBar from '@/components/ActionBar';
 import TrainingFeedback from '@/components/TrainingFeedback';
@@ -13,14 +14,13 @@ import Settings from '@/components/Settings';
 import Statistics from '@/components/Statistics';
 import ShoeIndicator from '@/components/ShoeIndicator';
 import ChipControls from '@/components/ChipControls';
-import styles from './page.module.css';
 
 export default function GameClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const mode = (searchParams.get('mode') as 'free' | 'training') || 'free';
 
-  const { t } = useI18n();
+  const { t, language, toggleLanguage } = useI18n();
   const {
     state,
     rules,
@@ -115,12 +115,51 @@ export default function GameClient() {
   const showSidebar = displayFeedback && state.phase !== 'betting';
 
   return (
-    <div className={`${styles.container} ${state.phase === 'betting' ? styles.noPadding : ''} gradient-bg`}>
-      <Header
-        onOpenSettings={() => setShowSettings(true)}
-        onOpenStats={() => setShowStats(true)}
-        onBack={() => router.push('/')}
-      />
+    <div className={`min-h-screen flex flex-col gradient-bg ${state.phase === 'betting' ? 'pb-0' : 'pb-[140px]'} gap-4`}>
+      {/* Header */}
+      <header className="flex items-center justify-between px-5 py-4 bg-black/20">
+        <div className="flex items-center gap-3">
+          {mode === 'training' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              icon={ArrowLeft}
+              onClick={() => router.push('/')}
+            >
+              Back
+            </Button>
+          )}
+          <div className="flex items-center gap-2">
+            <Spade className="w-6 h-6 text-[#7C3AED]" />
+            <h1 className="text-xl font-bold text-white">{t('title')}</h1>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            className="px-3 py-1.5 bg-[#7C3AED]/10 hover:bg-[#7C3AED]/20 text-[#7C3AED] border border-[#7C3AED]/30 rounded-lg text-sm font-medium transition-all cursor-pointer"
+            onClick={toggleLanguage}
+          >
+            {language === 'zh' ? 'EN' : '中'}
+          </button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            icon={BarChart3}
+            onClick={() => setShowStats(true)}
+            aria-label={t('stats')}
+          />
+
+          <Button
+            variant="ghost"
+            size="sm"
+            icon={SettingsIcon}
+            onClick={() => setShowSettings(true)}
+            aria-label={t('settings')}
+          />
+        </div>
+      </header>
 
       {/* Shoe indicator */}
       {state.phase !== 'betting' && (
@@ -133,16 +172,22 @@ export default function GameClient() {
       {/* Pause button */}
       {state.phase !== 'betting' && (
         <button
-          className={`${styles.pauseBtn} ${isPaused ? styles.paused : ''}`}
+          className={`fixed left-4 top-[140px] w-11 h-11 bg-[#1A1A2E] border border-white/10 rounded-lg flex items-center justify-center z-50 transition-all cursor-pointer hover:bg-white/10 ${
+            isPaused ? 'bg-[#7C3AED] border-[#7C3AED]' : ''
+          }`}
           onClick={() => setIsPaused(!isPaused)}
         >
-          {isPaused ? '▶️' : '⏸️'}
+          {isPaused ? (
+            <Play className="w-5 h-5 text-white" />
+          ) : (
+            <Pause className="w-5 h-5 text-white" />
+          )}
         </button>
       )}
 
-      <main className={styles.main}>
+      <main className="flex-1 w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {state.phase === 'betting' ? (
-          <div className={styles.startScreen}>
+          <div className="flex-1 flex items-center justify-center w-full">
             {mode === 'training' ? (
               <ChipControls
                 balance={state.chipBalance}
@@ -157,42 +202,57 @@ export default function GameClient() {
                 justRefilled={state.justRefilled}
               />
             ) : (
-              <button
-                className={styles.dealBtn}
+              <Button
+                variant="primary"
+                size="lg"
+                icon={Spade}
+                className="px-11 py-[18px] text-[17px] font-bold bg-gradient-to-br from-[#7C3AED] to-[#22c55e] shadow-[0_12px_28px_rgba(16,185,129,0.28)] hover:shadow-[0_16px_34px_rgba(16,185,129,0.35)]"
                 onClick={handleDealNewHand}
               >
-                🎴 {t('newGame')}
-              </button>
+                {t('newGame')}
+              </Button>
             )}
           </div>
         ) : (
           <>
             {/* Count panel - positioned outside gameArea for correct fixed positioning */}
             {mode === 'training' && (
-              <div className={styles.countPanel}>
-                <div className={styles.countItem}>
-                  <label>{t('runningCountLabel')}</label>
-                  <span>{state.runningCount > 0 ? `+${state.runningCount}` : state.runningCount}</span>
+              <div className="fixed bottom-40 left-4 bg-[rgba(7,10,20,0.75)] backdrop-blur-xl p-4 sm:p-6 rounded-xl flex flex-col gap-3 border border-white/15 min-w-[160px] z-50 md:flex-row md:gap-4 md:w-auto">
+                <div className="flex justify-between items-center text-white font-semibold gap-4">
+                  <label className="text-white/70 text-sm font-medium whitespace-nowrap">
+                    {t('runningCountLabel')}
+                  </label>
+                  <span className="font-mono text-lg min-w-[50px] text-right">
+                    {state.runningCount > 0 ? `+${state.runningCount}` : state.runningCount}
+                  </span>
                 </div>
-                <div className={styles.countItem}>
-                  <label>{t('trueCountLabel')}</label>
-                  <span>{state.trueCount > 0 ? `+${state.trueCount}` : state.trueCount}</span>
+                <div className="flex justify-between items-center text-white font-semibold gap-4">
+                  <label className="text-white/70 text-sm font-medium whitespace-nowrap">
+                    {t('trueCountLabel')}
+                  </label>
+                  <span className="font-mono text-lg min-w-[50px] text-right">
+                    {state.trueCount > 0 ? `+${state.trueCount}` : state.trueCount}
+                  </span>
                 </div>
-                <div className={styles.countItem}>
-                  <label>{t('chipsLabel')}</label>
-                  <span>${state.chipBalance}</span>
+                <div className="flex justify-between items-center text-white font-semibold gap-4">
+                  <label className="text-white/70 text-sm font-medium whitespace-nowrap">
+                    {t('chipsLabel')}
+                  </label>
+                  <span className="font-mono text-lg min-w-[50px] text-right">
+                    ${state.chipBalance}
+                  </span>
                 </div>
               </div>
             )}
 
-            <div className={styles.gameArea}>
+            <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6 lg:gap-8 z-10 w-[min(760px,92vw)] md:relative md:left-auto md:top-auto md:translate-x-0 md:translate-y-0">
               <Hand
                 hand={state.dealerHand}
                 label={t('dealer')}
                 hideFirstCard={!state.dealerHoleCardRevealed}
               />
 
-              <div className={styles.divider} />
+              <div className="w-[200px] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent my-2 sm:my-4" />
 
               {state.playerHands.map((hand, index) => (
                 <Hand
@@ -206,24 +266,32 @@ export default function GameClient() {
               ))}
 
               {state.phase === 'settlement' && (
-                <div className={styles.results}>
-                  <div className={styles.resultRow}>
+                <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 md:static md:left-auto md:translate-x-0 md:mt-2">
+                  <div className="flex gap-2 flex-wrap">
                     {state.result.map((result, index) => (
                       <span
                         key={index}
-                        className={`${styles.result} ${styles[result]}`}
+                        className={`px-6 py-2 rounded-[20px] font-bold text-base uppercase ${
+                          result === 'win' || result === 'blackjack'
+                            ? 'bg-[rgba(34,197,94,0.2)] text-[#22c55e]'
+                            : result === 'lose'
+                            ? 'bg-[rgba(239,68,68,0.2)] text-[#ef4444]'
+                            : result === 'push'
+                            ? 'bg-[rgba(245,158,11,0.2)] text-[#f59e0b]'
+                            : 'bg-[rgba(156,163,175,0.2)] text-[#9ca3af]'
+                        }`}
                       >
                         {result.toUpperCase()}
                       </span>
                     ))}
                   </div>
                   {!isPaused && mode !== 'training' && (
-                    <div className={styles.countdown}>
+                    <div className="text-sm text-[#94A3B8] font-semibold">
                       {countdown}s
                     </div>
                   )}
                   {mode === 'training' && (
-                    <div className={styles.nextBetHint}>
+                    <div className="mt-2 text-sm text-white/60 font-medium animate-pulse">
                       {t('placeNextBet')}
                     </div>
                   )}

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
-import { HandNotation, Position, ActionFrequencies } from '@/poker/types';
-import { getHandMatrix, getCombos, POSITION_NAMES } from '@/poker/constants';
+import { ArrowLeft, Target, TrendingUp } from 'lucide-react';
+import { HandNotation, ActionFrequencies } from '@/poker/types';
+import { getHandMatrix, POSITION_NAMES } from '@/poker/constants';
 import { SCENARIOS, getHandStrategy, getDefaultFrequencies } from '@/poker/data/strategies';
+import { Button } from '@/components/ui';
 
 interface TrainingState {
   currentHand: HandNotation | null;
@@ -23,30 +24,25 @@ interface TrainingState {
   } | null;
 }
 
-// Get a random hand weighted by playability
 function getRandomHand(scenarioId: string): HandNotation {
   const matrix = getHandMatrix();
   const hands: HandNotation[] = [];
-  
-  // Collect all hands
+
   for (const row of matrix) {
     for (const cell of row) {
       hands.push(cell.notation);
     }
   }
-  
-  // Return random hand
+
   return hands[Math.floor(Math.random() * hands.length)];
 }
 
-// Calculate score based on action vs GTO
 function calculateScore(
   userAction: 'fold' | 'call' | 'raise',
   gtoFreqs: ActionFrequencies
 ): { score: number; isCorrect: boolean; optimalAction: string } {
   const userFreq = gtoFreqs[userAction];
-  
-  // Determine optimal action
+
   let optimalAction = 'fold';
   let maxFreq = gtoFreqs.fold;
   if (gtoFreqs.call > maxFreq) {
@@ -57,12 +53,11 @@ function calculateScore(
     maxFreq = gtoFreqs.raise;
     optimalAction = 'raise';
   }
-  
-  // Score: base score from action frequency + bonus for correct primary action
+
   const baseScore = userFreq * 100;
   const isOptimal = userAction === optimalAction;
   const score = Math.round(baseScore + (isOptimal ? 0 : 0));
-  
+
   return {
     score: Math.min(100, score),
     isCorrect: userFreq >= 0.5 || isOptimal,
@@ -73,7 +68,7 @@ function calculateScore(
 export default function TrainingPage() {
   const router = useRouter();
   const [state, setState] = useState<TrainingState>({
-    currentHand: null,
+    currentHand: getRandomHand('btn_rfi'),
     scenarioId: 'btn_rfi',
     handsPlayed: 0,
     correctCount: 0,
@@ -82,10 +77,9 @@ export default function TrainingPage() {
     lastAction: null,
     lastResult: null,
   });
-  
+
   const scenario = SCENARIOS.find(s => s.id === state.scenarioId);
-  
-  // Deal new hand
+
   const dealNewHand = useCallback(() => {
     const newHand = getRandomHand(state.scenarioId);
     setState(prev => ({
@@ -96,21 +90,14 @@ export default function TrainingPage() {
       lastResult: null,
     }));
   }, [state.scenarioId]);
-  
-  // Start with a hand
-  useEffect(() => {
-    if (!state.currentHand) {
-      dealNewHand();
-    }
-  }, [state.currentHand, dealNewHand]);
-  
-  // Handle user action
+
   const handleAction = useCallback((action: 'fold' | 'call' | 'raise') => {
     if (!state.currentHand || state.showFeedback) return;
-    
-    const gtoFreqs = getHandStrategy(state.scenarioId, state.currentHand);
+
+    const strategy = getHandStrategy(state.scenarioId, state.currentHand);
+    const gtoFreqs = strategy || getDefaultFrequencies();
     const result = calculateScore(action, gtoFreqs);
-    
+
     setState(prev => ({
       ...prev,
       showFeedback: true,
@@ -124,218 +111,183 @@ export default function TrainingPage() {
       totalScore: prev.totalScore + result.score,
     }));
   }, [state.currentHand, state.scenarioId, state.showFeedback]);
-  
-  // Change scenario
-  const changeScenario = useCallback((newScenarioId: string) => {
-    setState(prev => ({
-      ...prev,
-      scenarioId: newScenarioId,
-      currentHand: null,
-      showFeedback: false,
-    }));
-  }, []);
-  
-  // Get hand display
-  const getHandDisplay = (notation: HandNotation): { cards: string; type: string } => {
-    const clean = notation.replace(/[so]$/, '');
-    const r1 = clean[0];
-    const r2 = clean[1];
-    
-    if (r1 === r2) {
-      return { cards: `${r1}♠ ${r1}♥`, type: 'Pocket Pair' };
-    }
-    if (notation.endsWith('s')) {
-      return { cards: `${r1}♠ ${r2}♠`, type: 'Suited' };
-    }
-    return { cards: `${r1}♠ ${r2}♥`, type: 'Offsuit' };
-  };
-  
-  const handDisplay = state.currentHand ? getHandDisplay(state.currentHand) : null;
-  const averageScore = state.handsPlayed > 0 
-    ? Math.round(state.totalScore / state.handsPlayed) 
-    : 0;
+
+  const accuracy = state.handsPlayed > 0 ? Math.round((state.correctCount / state.handsPlayed) * 100) : 0;
+  const avgScore = state.handsPlayed > 0 ? Math.round(state.totalScore / state.handsPlayed) : 0;
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <button className={styles.backBtn} onClick={() => router.push('/')}>
-          ← Back
-        </button>
-        <h1>Preflop Training</h1>
+    <div className="min-h-screen gradient-bg flex flex-col">
+      {/* Header */}
+      <header className="flex items-center gap-5 px-5 py-4 bg-black/20">
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={ArrowLeft}
+          onClick={() => router.push('/')}
+        >
+          Back
+        </Button>
+        <h1 className="text-xl font-bold" style={{ fontFamily: 'var(--font-family-heading)' }}>
+          Preflop Training
+        </h1>
       </header>
-      
-      {/* Scenario selector */}
-      <div className={styles.scenarioBar}>
-        <select 
+
+      {/* Scenario Selection Bar */}
+      <div className="flex items-center gap-4 px-5 py-3 bg-white/5 flex-wrap">
+        <select
+          className="flex-1 min-w-[200px] bg-white/10 border border-white/20 text-white px-3.5 py-2.5 rounded-lg text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#7C3AED]"
           value={state.scenarioId}
-          onChange={(e) => changeScenario(e.target.value)}
-          className={styles.scenarioSelect}
+          onChange={(e) => {
+            setState(prev => ({
+              ...prev,
+              scenarioId: e.target.value,
+              currentHand: getRandomHand(e.target.value),
+              showFeedback: false,
+            }));
+          }}
         >
           {SCENARIOS.map(s => (
-            <option key={s.id} value={s.id}>{s.name} ({s.nameZh})</option>
+            <option key={s.id} value={s.id}>{s.name}</option>
           ))}
         </select>
-        
+
         {scenario && (
-          <div className={styles.positionBadge}>
-            <span className={styles.positionIcon}>📍</span>
-            {scenario.position}
-            {scenario.vsPosition && ` vs ${scenario.vsPosition}`}
+          <div className="flex items-center gap-2 bg-[#22c55e]/20 border border-[#22c55e]/40 text-[#22c55e] px-3.5 py-2 rounded-full font-semibold text-sm">
+            <Target className="w-4 h-4" />
+            <span>{POSITION_NAMES[scenario.position].en}</span>
           </div>
         )}
       </div>
-      
-      {/* Stats bar */}
-      <div className={styles.statsBar}>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Hands</span>
-          <span className={styles.statValue}>{state.handsPlayed}</span>
+
+      {/* Stats Bar */}
+      <div className="flex gap-1 px-5 py-3 bg-black/20">
+        <div className="flex-1 text-center p-2 bg-white/5 rounded-lg">
+          <span className="block text-[10px] text-white/50 uppercase mb-1">Hands</span>
+          <span className="text-xl font-bold">{state.handsPlayed}</span>
         </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Correct</span>
-          <span className={styles.statValue}>{state.correctCount}</span>
+        <div className="flex-1 text-center p-2 bg-white/5 rounded-lg">
+          <span className="block text-[10px] text-white/50 uppercase mb-1">Accuracy</span>
+          <span className="text-xl font-bold text-[#22c55e]">{accuracy}%</span>
         </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Accuracy</span>
-          <span className={styles.statValue}>
-            {state.handsPlayed > 0 
-              ? Math.round((state.correctCount / state.handsPlayed) * 100) 
-              : 0}%
-          </span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Avg Score</span>
-          <span className={styles.statValue}>{averageScore}</span>
+        <div className="flex-1 text-center p-2 bg-white/5 rounded-lg">
+          <span className="block text-[10px] text-white/50 uppercase mb-1">Avg Score</span>
+          <span className="text-xl font-bold text-[#7C3AED]">{avgScore}</span>
         </div>
       </div>
-      
-      {/* Table area */}
-      <div className={styles.tableArea}>
-        <div className={styles.pokerTable}>
-          {/* Position indicator */}
-          <div className={styles.positionDisplay}>
-            {scenario && (
-              <>
-                <div className={styles.positionLabel}>
-                  {POSITION_NAMES[scenario.position].en}
-                </div>
-                <div className={styles.positionLabelZh}>
-                  {POSITION_NAMES[scenario.position].zh}
-                </div>
-              </>
-            )}
-          </div>
-          
-          {/* Hero hand */}
-          {handDisplay && (
-            <div className={styles.heroHand}>
-              <div className={styles.handCards}>{handDisplay.cards}</div>
-              <div className={styles.handNotation}>
+
+      {/* Poker Table Area */}
+      <div className="flex-1 flex items-center justify-center p-5">
+        <div
+          className="w-full max-w-[400px] aspect-[1.5] rounded-[120px] border-[12px] border-[#78350f] shadow-2xl flex flex-col items-center justify-center gap-4 relative"
+          style={{
+            background: 'linear-gradient(135deg, #065f46, #047857, #059669)',
+            boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5)'
+          }}
+        >
+          {/* Position Display */}
+          {scenario && (
+            <div className="text-center">
+              <div className="text-sm text-white/70">{scenario.action}</div>
+            </div>
+          )}
+
+          {/* Hand Display */}
+          {state.currentHand && (
+            <div className="text-center">
+              <div className="text-[2.5rem] tracking-[8px] mb-2" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}>
                 {state.currentHand}
-                <span className={styles.handType}>{handDisplay.type}</span>
+              </div>
+              <div className="text-2xl font-bold text-[#ffd700] flex items-center justify-center gap-2">
+                <span>{state.currentHand}</span>
+                <span className="text-xs font-normal text-white/60 bg-black/30 px-2 py-1 rounded">
+                  {state.currentHand.includes('s') ? 'Suited' : state.currentHand.includes('o') ? 'Offsuit' : 'Pair'}
+                </span>
               </div>
             </div>
           )}
         </div>
       </div>
-      
-      {/* Feedback panel */}
+
+      {/* Feedback */}
       {state.showFeedback && state.lastResult && (
-        <div className={`${styles.feedback} ${state.lastResult.isCorrect ? styles.correct : styles.incorrect}`}>
-          <div className={styles.feedbackHeader}>
-            {state.lastResult.isCorrect ? '✅ Good!' : '❌ Suboptimal'}
-            <span className={styles.feedbackScore}>Score: {state.lastResult.score}</span>
+        <div className={`mx-5 p-4 rounded-xl animate-slideIn ${
+          state.lastResult.isCorrect
+            ? 'bg-[#22c55e]/15 border border-[#22c55e]/40'
+            : 'bg-[#ef4444]/15 border border-[#ef4444]/40'
+        }`}>
+          <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+            <span>{state.lastResult.isCorrect ? '✓ Correct!' : '✗ Incorrect'}</span>
+            <span className="text-sm font-normal text-white/70">Score: {state.lastResult.score}/100</span>
           </div>
-          
-          <div className={styles.gtoBreakdown}>
-            <div className={styles.gtoRow}>
-              <span className={styles.actionLabel}>Raise</span>
-              <div className={styles.freqBar}>
-                <div 
-                  className={styles.freqFill}
-                  style={{ 
-                    width: `${state.lastResult.gtoFreqs.raise * 100}%`,
-                    backgroundColor: '#22c55e'
-                  }}
-                />
-              </div>
-              <span className={styles.freqPct}>
-                {(state.lastResult.gtoFreqs.raise * 100).toFixed(0)}%
-              </span>
-              {state.lastAction === 'raise' && <span className={styles.yourChoice}>← You</span>}
-            </div>
-            <div className={styles.gtoRow}>
-              <span className={styles.actionLabel}>Call</span>
-              <div className={styles.freqBar}>
-                <div 
-                  className={styles.freqFill}
-                  style={{ 
-                    width: `${state.lastResult.gtoFreqs.call * 100}%`,
-                    backgroundColor: '#eab308'
-                  }}
-                />
-              </div>
-              <span className={styles.freqPct}>
-                {(state.lastResult.gtoFreqs.call * 100).toFixed(0)}%
-              </span>
-              {state.lastAction === 'call' && <span className={styles.yourChoice}>← You</span>}
-            </div>
-            <div className={styles.gtoRow}>
-              <span className={styles.actionLabel}>Fold</span>
-              <div className={styles.freqBar}>
-                <div 
-                  className={styles.freqFill}
-                  style={{ 
-                    width: `${state.lastResult.gtoFreqs.fold * 100}%`,
-                    backgroundColor: '#6b7280'
-                  }}
-                />
-              </div>
-              <span className={styles.freqPct}>
-                {(state.lastResult.gtoFreqs.fold * 100).toFixed(0)}%
-              </span>
-              {state.lastAction === 'fold' && <span className={styles.yourChoice}>← You</span>}
-            </div>
+
+          {/* GTO Breakdown */}
+          <div className="flex flex-col gap-2">
+            {(['fold', 'call', 'raise'] as const).map(action => {
+              const freq = state.lastResult!.gtoFreqs[action];
+              const isUserChoice = action === state.lastAction;
+              return (
+                <div key={action} className="flex items-center gap-2">
+                  <span className="w-12 text-sm font-medium capitalize">{action}</span>
+                  <div className="flex-1 h-3 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-300"
+                      style={{
+                        width: `${freq * 100}%`,
+                        background: action === 'fold' ? '#6b7280' : action === 'call' ? '#eab308' : '#22c55e'
+                      }}
+                    />
+                  </div>
+                  <span className="w-10 text-right text-sm text-white/70">{Math.round(freq * 100)}%</span>
+                  {isUserChoice && <span className="text-xs text-[#ffd700] font-semibold">YOU</span>}
+                </div>
+              );
+            })}
           </div>
-          
+
           {!state.lastResult.isCorrect && (
-            <div className={styles.suggestion}>
-              Optimal: <strong>{state.lastResult.optimalAction.toUpperCase()}</strong>
+            <div className="mt-3 pt-3 border-t border-white/10 text-sm text-white/70">
+              💡 Optimal: <strong className="text-[#22c55e]">{state.lastResult.optimalAction.toUpperCase()}</strong>
             </div>
           )}
         </div>
       )}
-      
-      {/* Action buttons */}
-      <div className={styles.actionBar}>
-        {!state.showFeedback ? (
+
+      {/* Action Bar */}
+      <div className="flex gap-2.5 p-5 bg-black/30">
+        {state.showFeedback ? (
+          <Button
+            variant="primary"
+            size="lg"
+            icon={TrendingUp}
+            className="w-full text-lg font-bold uppercase"
+            onClick={dealNewHand}
+          >
+            Next Hand
+          </Button>
+        ) : (
           <>
-            <button 
-              className={`${styles.actionBtn} ${styles.foldBtn}`}
+            <button
+              className="flex-1 py-4 px-5 rounded-xl text-lg font-bold uppercase cursor-pointer transition-all duration-200 active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, #6b7280, #4b5563)', color: '#fff' }}
               onClick={() => handleAction('fold')}
             >
               Fold
             </button>
-            <button 
-              className={`${styles.actionBtn} ${styles.callBtn}`}
+            <button
+              className="flex-1 py-4 px-5 rounded-xl text-lg font-bold uppercase cursor-pointer transition-all duration-200 active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, #eab308, #ca8a04)', color: '#000' }}
               onClick={() => handleAction('call')}
             >
               Call
             </button>
-            <button 
-              className={`${styles.actionBtn} ${styles.raiseBtn}`}
+            <button
+              className="flex-1 py-4 px-5 rounded-xl text-lg font-bold uppercase cursor-pointer transition-all duration-200 active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff' }}
               onClick={() => handleAction('raise')}
             >
               Raise
             </button>
           </>
-        ) : (
-          <button 
-            className={`${styles.actionBtn} ${styles.nextBtn}`}
-            onClick={dealNewHand}
-          >
-            Next Hand →
-          </button>
         )}
       </div>
     </div>

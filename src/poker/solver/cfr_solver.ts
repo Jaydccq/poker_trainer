@@ -18,7 +18,7 @@ import {
   NodeStrategy,
   HandNodeStrategy,
 } from './types';
-import { RANKS, ActionFrequencies } from '../types';
+import { RANKS, ActionFrequencies, Rank } from '../types';
 
 // ============================================================================
 // Internal Types
@@ -539,8 +539,8 @@ export class CFRSolver {
     const isPair = hand.length === 2;
     const isSuited = hand.endsWith('s');
     
-    const r1 = RANKS.indexOf(hand[0] as any);
-    const r2 = RANKS.indexOf(hand[1] as any);
+    const r1 = RANKS.indexOf(hand[0] as Rank);
+    const r2 = RANKS.indexOf(hand[1] as Rank);
     
     // Base rank from card ranks (inverted since lower index = higher rank)
     let rank = (26 - r1 - r2) * 10;

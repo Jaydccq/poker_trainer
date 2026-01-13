@@ -1,3 +1,4 @@
+import { Card } from '@/types';
 import { createDeck, createShoe, shuffle, dealCard } from '../deck';
 
 describe('Deck and Shoe', () => {
@@ -115,7 +116,7 @@ describe('Deck and Shoe', () => {
     });
 
     it('should return undefined when shoe is empty', () => {
-      const shoe: any[] = [];
+      const shoe: Card[] = [];
       const card = dealCard(shoe);
       expect(card).toBeUndefined();
     });

@@ -15,18 +15,11 @@ import {
 import { createShoe, dealCard } from '@/utils/deck';
 import { createHand, calculateTotal, getHandType } from '@/utils/hand';
 import { recommendAction, StrategyContext } from '@/utils/strategy';
+import { DEFAULT_RULES } from '@/lib/game/config';
 
-// Default rules matching requirements
-const DEFAULT_RULES: GameRules = {
-  decks: 6,
-  dealerRule: 'S17',
-  blackjackPayout: '3:2',
-  doubleAnyTwoCards: true,
-  doubleAfterSplit: true,
-  acesSplitOneCard: true,
-  lateSurrender: true,
-  insuranceEnabled: true,
-};
+// Re-export for backwards compatibility
+export { DEFAULT_RULES } from '@/lib/game/config';
+
 
 function createInitialState(rules: GameRules): GameState {
   const shoe = createShoe(rules.decks, rules.seed);
@@ -274,7 +267,7 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
       if (!hand) return prev;
       
       let newHands = [...prev.playerHands];
-      let shoe = [...prev.shoe];
+      const shoe = [...prev.shoe];
       let newHandIndex = handIndex;
       let newRunningCount = prev.runningCount;
       let balance = prev.chipBalance;
@@ -365,7 +358,7 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
         }
       }
       
-      let allComplete = newHands.every(h => h.isComplete || h.isBusted);
+      const allComplete = newHands.every(h => h.isComplete || h.isBusted);
       let newPhase = prev.phase;
       
       if (allComplete) {
@@ -407,8 +400,8 @@ export function useGame(initialRules: GameRules = DEFAULT_RULES, mode: 'free' | 
     setState(prev => {
       if (prev.phase !== 'dealerTurn') return prev;
       
-      let shoe = [...prev.shoe];
-      let dealerCards = [...prev.dealerHand.cards];
+      const shoe = [...prev.shoe];
+      const dealerCards = [...prev.dealerHand.cards];
       let newRunningCount = prev.runningCount;
 
       const dealOne = () => {

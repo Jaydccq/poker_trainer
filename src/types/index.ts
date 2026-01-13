@@ -80,6 +80,7 @@ export type GamePhase =
   | "playerTurn"
   | "dealerTurn"
   | "settlement"
+  | "results"
   | "insurance";
 
 export type RoundResult = "win" | "lose" | "push" | "blackjack" | "surrender";

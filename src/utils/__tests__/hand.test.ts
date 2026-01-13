@@ -1,4 +1,4 @@
-import { Card } from '@/types';
+import { Card, Rank, Suit } from '@/types';
 import {
   calculateTotal,
   isBlackjack,
@@ -10,10 +10,10 @@ import {
 } from '../hand';
 
 // Helper to create cards easily
-const card = (rank: string, suit = 'hearts'): Card => ({
-  rank: rank as any,
-  suit: suit as any,
-  value: rank === 'A' ? 11 : ['J', 'Q', 'K'].includes(rank) ? 10 : parseInt(rank),
+const card = (rank: Rank, suit: Suit = 'hearts'): Card => ({
+  rank,
+  suit,
+  value: rank === 'A' ? 11 : ['J', 'Q', 'K', '10'].includes(rank) ? 10 : Number(rank),
 });
 
 describe('calculateTotal', () => {

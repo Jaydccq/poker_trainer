@@ -3,8 +3,11 @@ import withPWA from "@ducanh2912/next-pwa";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
-  turbopack: {}, // Enable Turbopack compatibility with webpack config
+  reactCompiler: false,
+  turbopack: {
+    root: process.cwd(),
+  },
+  serverExternalPackages: ['ably'],
 };
 
 export default withPWA({

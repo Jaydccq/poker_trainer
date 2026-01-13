@@ -248,8 +248,8 @@ export function saveSolution(
   if (result?.strategies instanceof Map) {
     serializableResult = {
       ...result,
-      strategies: Object.fromEntries(result.strategies) as any,
-    };
+      strategies: Object.fromEntries(result.strategies),
+    } as unknown as SolverResult;
   }
   
   const savedSolution: SavedSolution = {
@@ -285,7 +285,10 @@ export function updateSavedSolution(
     
     // Convert Map if present in result
     if (solution.result?.strategies instanceof Map) {
-      solution.result.strategies = Object.fromEntries(solution.result.strategies) as any;
+      solution.result = {
+        ...solution.result,
+        strategies: Object.fromEntries(solution.result.strategies),
+      } as unknown as SolverResult;
     }
     
     localStorage.setItem(STORAGE_KEYS.SOLUTIONS, JSON.stringify(solutions));
