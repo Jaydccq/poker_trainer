@@ -1,0 +1,190 @@
+.page {
+  min-height: 100vh;
+  padding: clamp(24px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.title {
+  margin-top: 8px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 12px;
+  max-width: 640px;
+  color: var(--color-text-secondary);
+}
+
+.phaseBadge {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  background: rgba(26, 26, 46, 0.8);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.25);
+}
+
+.phaseLabel {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.content {
+  flex: 1;
+}
+
+.setupPanel,
+.arrangingPanel,
+.reviewPanel {
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: rgba(15, 15, 35, 0.6);
+  display: grid;
+  gap: 24px;
+}
+
+.setupIntro h2 {
+  font-size: 24px;
+  font-family: var(--font-family-heading);
+}
+
+.setupIntro p {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.settingCard {
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  display: grid;
+  gap: 10px;
+}
+
+.settingLabel {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(15, 15, 35, 0.8);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: var(--color-text-primary);
+}
+
+.primaryButton {
+  padding: 14px 36px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-cta));
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 18px 32px rgba(124, 58, 237, 0.35);
+  justify-self: start;
+}
+
+.primaryButton:hover {
+  box-shadow: 0 22px 36px rgba(124, 58, 237, 0.45);
+}
+
+.secondaryActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondaryButton {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  color: white;
+}
+
+.loadingPanel {
+  min-height: 360px;
+  padding: clamp(20px, 4vw, 32px);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: rgba(15, 15, 35, 0.7);
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.loader {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(124, 58, 237, 0.2);
+  border-top-color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+.errorBanner {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--color-error);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .primaryButton {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .secondaryActions {
+    width: 100%;
+  }
+
+  .secondaryButton {
+    flex: 1;
+    text-align: center;
+  }
+}

@@ -184,6 +184,36 @@ export default function MainMenu() {
           </div>
         </section>
 
+        {/* Chinese Poker Section */}
+        <section className="bg-[rgba(26,26,46,0.8)] backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl animate-slideIn" style={{ animationDelay: '0.2s' }}>
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-16 h-16 bg-[#22C55E]/20 rounded-xl flex items-center justify-center">
+              <GraduationCap className="w-10 h-10 text-[#22C55E]" strokeWidth={2} />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-family-heading)' }}>Chinese Poker</h2>
+              <p className="text-[#94A3B8]">十三张训练与 EV 复盘</p>
+            </div>
+          </div>
+
+          {/* Menu Items */}
+          <div className="space-y-3 mt-6">
+            <button
+              onClick={() => router.push('/chinese-poker/training')}
+              className="w-full flex items-center gap-4 p-4 bg-gradient-to-r from-[#22C55E]/20 to-[#7C3AED]/20 border border-[#22C55E] hover:border-[#86EFAC] rounded-xl transition-all duration-200 cursor-pointer group shadow-glow-success"
+            >
+              <div className="w-12 h-12 bg-[#22C55E]/30 group-hover:bg-[#22C55E]/40 rounded-lg flex items-center justify-center transition-colors">
+                <GraduationCap className="w-7 h-7 text-white" strokeWidth={2} />
+              </div>
+              <div className="text-left flex-1">
+                <h3 className="text-lg font-semibold">Training Mode</h3>
+                <p className="text-sm text-[#94A3B8]">发牌、排列、分析与复盘</p>
+              </div>
+            </button>
+          </div>
+        </section>
+
       </div>
     </div>
   );

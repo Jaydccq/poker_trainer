@@ -1,0 +1,116 @@
+.container {
+  display: grid;
+  gap: 24px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.metricCard {
+  padding: 18px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: rgba(26, 26, 46, 0.75);
+  display: grid;
+  gap: 8px;
+}
+
+.metricLabel {
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+}
+
+.metricValue {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.metricSub {
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.previewBlock {
+  padding: 18px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 15, 35, 0.6);
+  display: grid;
+  gap: 16px;
+}
+
+.previewTitle {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.previewRows {
+  display: grid;
+  gap: 12px;
+}
+
+.previewRow {
+  display: grid;
+  gap: 8px;
+}
+
+.previewLabel {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.cardRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.suggestions {
+  padding: 18px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  background: rgba(26, 26, 46, 0.8);
+  display: grid;
+  gap: 12px;
+}
+
+.suggestionHeader {
+  font-weight: 600;
+}
+
+.suggestionList {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.suggestionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--color-cta);
+  color: var(--color-text-secondary);
+}
+
+.suggestionImpact {
+  font-size: 12px;
+  color: var(--color-cta);
+  font-weight: 600;
+}
+
+.suggestionEmpty {
+  color: var(--color-text-secondary);
+}

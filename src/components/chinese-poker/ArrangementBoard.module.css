@@ -1,0 +1,482 @@
+.board {
+  display: grid;
+  gap: 20px;
+}
+
+.zonesContainer {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.zonesAll {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+.zonesAll .zone {
+  flex: unset;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+  max-width: 560px;
+}
+
+.zone {
+  padding: 18px 20px;
+  border-radius: var(--radius-xl);
+  background: rgba(26, 26, 46, 0.72);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  flex: 0 0 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.zoneActive {
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.4);
+}
+
+.zoneFocus {
+  border-color: rgba(124, 58, 237, 0.75);
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.35);
+}
+
+.zoneInvalid {
+  border-color: rgba(239, 68, 68, 0.7);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+}
+
+.focusBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  flex-wrap: wrap;
+}
+
+.focusText {
+  font-weight: 600;
+}
+
+.focusHint {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hintDesktop {
+  display: inline;
+}
+
+.hintMobile {
+  display: none;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.step {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 15, 35, 0.6);
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.step:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+}
+
+.stepActive {
+  border-color: rgba(124, 58, 237, 0.8);
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.25);
+}
+
+.stepDone {
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+.stepIndex {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.25);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stepLabel {
+  font-weight: 600;
+}
+
+.stepCount {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.zoneHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.zoneLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.zoneHint {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 6px;
+}
+
+.zoneCount {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.slotRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 90px;
+}
+
+.emptySlot {
+  width: 64px;
+  height: 88px;
+  border-radius: 12px;
+  border: 1px dashed rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.2);
+}
+
+.cardWrapper {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: grab;
+  touch-action: manipulation;
+}
+
+.cardWrapper:active {
+  cursor: grabbing;
+}
+
+.dragging {
+  opacity: 0.6;
+  transform: translateY(-2px);
+}
+
+.unassigned {
+  background: rgba(15, 15, 35, 0.6);
+  border-style: dashed;
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statusHint {
+  color: var(--color-text-secondary);
+}
+
+.statusValid {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.statusInvalid {
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.statusWarning {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+.statusTip {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primaryButton {
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-cta));
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 16px 30px rgba(124, 58, 237, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(124, 58, 237, 0.45);
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ghostButton {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.ghostButton:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  color: white;
+}
+
+.ghostButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dangerButton {
+  border-color: rgba(239, 68, 68, 0.6);
+  color: var(--color-error);
+}
+
+.dangerButton:hover {
+  border-color: rgba(239, 68, 68, 0.8);
+  color: white;
+}
+
+.confirmPanel {
+  padding: 18px 20px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  background: rgba(26, 26, 46, 0.85);
+  display: grid;
+  gap: 12px;
+}
+
+.confirmHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.confirmTitle {
+  font-weight: 700;
+}
+
+.confirmHint {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.confirmList {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  color: var(--color-text-secondary);
+}
+
+.confirmPrompt {
+  font-weight: 600;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondaryButton {
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  color: white;
+}
+
+.unassignedControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.sortGroup {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 15, 35, 0.6);
+}
+
+.sortButton {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.sortButton:hover {
+  color: white;
+}
+
+.sortButtonActive {
+  background: rgba(124, 58, 237, 0.3);
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .topActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .zone {
+    padding: 14px;
+  }
+
+  .zoneHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .unassignedControls {
+    justify-content: flex-start;
+  }
+
+  .emptySlot {
+    width: 52px;
+    height: 74px;
+  }
+
+  .slotRow {
+    gap: 8px;
+    min-height: 72px;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .confirmActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .board {
+    padding-bottom: 220px;
+  }
+
+  .stepper {
+    display: none;
+  }
+
+  .hintDesktop {
+    display: none;
+  }
+
+  .hintMobile {
+    display: inline;
+  }
+
+  .unassigned {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 40;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+  }
+
+  .unassigned .slotRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+}

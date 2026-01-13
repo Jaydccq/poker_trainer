@@ -14,25 +14,25 @@ The app is a Progressive Web App (PWA) with offline support, built with React 19
 
 ```bash
 # Development
-npm run dev              # Start dev server at http://localhost:3000
+bun run dev              # Start dev server at http://localhost:3000
 
 # Build & Deploy
-npm run build           # Production build
-npm start               # Start production server
+bun run build           # Production build
+bun start               # Start production server
 
 # Testing
-npm test                # Run all tests
-npm run test:watch      # Watch mode
-npm run test:coverage   # With coverage report
+bun test                # Run all tests
+bun run test:watch      # Watch mode
+bun run test:coverage   # With coverage report
 
 # Linting
-npm run lint            # Run ESLint
+bun run lint            # Run ESLint
 ```
 
 ### Test Patterns
 - Test files: `**/__tests__/**/*.test.ts(x)` or `**/*.test.ts(x)`
 - Coverage threshold: 70% (branches, functions, lines, statements)
-- Run single test: `npm test -- <test-file-path>`
+- Run single test: `bun test -- <test-file-path>`
 
 ## Architecture
 
@@ -162,5 +162,5 @@ NEXT_PUBLIC_ENABLE_MULTIPLAYER=true
 1. Set up Upstash Redis account: https://console.upstash.com/
 2. Set up Ably account: https://ably.com/signup
 3. Configure `.env.local` with credentials
-4. Run `npm run dev`
+4. Run `bun run dev`
 5. Execute `node test-api.mjs` to verify API endpoints
